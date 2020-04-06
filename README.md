@@ -1,43 +1,15 @@
-# nexmo API practice 
+# nexmo-dispatch-api-demo
 My playground of coding and demo. 
+The demo is based on nexmo dispatch API. 
 
-On the main page, clicking on the chat icon, a private message will be created between the configured customer_a_number and customer_b_number.
-
-The virtual number serves as a proxy to mask the sender numbers, so that neither of the sender will see the other party's mobile number.
-
-
-The demo is based on nexmo verify API. 
-
-
-# Deploy to Heroku
-
-## Step 1: 
-
-Click the following button to deploy the source to Heroku
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/kopi-kosong/nexmo-sms-api.git)
-
-## Step 2: 
-
-Click on your Application, and Go to "Settings - > Config Vars" to add the following environment variables:
-
-NEXMO_API_KEY=<YOUR NEXMO API KEY>,
-
-NEXMO_API_SECRET=<YOUR NEXMO API SECRET>,
-
-NEXMO_CUST_A_NUM =<From Mobile Number>,
-
-NEXMO_CUST_B_NUM =<To Mobile Number>,
-
-NEXMO_BRAND_NAME=<UP TO 11 ALPHANUMERIC CHARACTERS>
-
-VIRTUAL_NUMBER=<YOUR Nexmo Vitural Number >,
-
-# Run it locally
+# Run the App Locally
 
 ## Prerequisites
-Download the source from git.
+* You have registered an Nexmo Account. If not, please kindly go to https://dashboard.nexmo.com/ to register an account.
+* Download the source from git.
+* To send Whatsapp, the application is using APAC Sandbox, and a fixed whatsapp ID. It wont work if you use a different ID 
 
+## Prerequisites
 Run the following command to install dependencies.
 
 ```bash
@@ -46,27 +18,33 @@ npm install
 
 ## Configuring the application
 
-Configure the following in envrionment variables in Windows:
+Assign values to the following in dispatchAPIWhatsappFailover.js file:
 
-NEXMO_API_KEY=YOUR NEXMO API KEY,
+* apiKey: 'YOUR NEXMO API KEY'
 
-NEXMO_API_SECRET=YOUR NEXMO API SECRET,
+* apiSecret: 'YOUR NEXMO API SECRET'
 
-NEXMO_CUST_A_NUM =From Mobile Number,
+* applicationId 'YOUR MESSGAING API APP ID'
 
-NEXMO_CUST_B_NUM =To Mobile Number
+* privateKey ='YOUR PRIVATE KEY OF THE APP'
 
-NEXMO_BRAND_NAME=UP TO 11 ALPHANUMERIC CHARACTERS
+* You need to customized API server URL to use APAC Sandbox Server
+* A fixed Whatsapp virtual number
 
-VIRTUAL_NUMBER=<YOUR Nexmo Vitural Number >,
-
-or, you could go to server.js and hardcoded the values.
-
-For how to modify enrionment variables on Windows, please refer to the following :
-https://docs.oracle.com/en/database/oracle/r-enterprise/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html
-
-```
 ## Running the application
-You should then be able to run the app with `npm start`.
+```
+ node dispatchAPIWhatsappFailover.js
+```
 
+ 
+## Test the Application
+
+1. From your mobile, send a Whatsapp Message to the fixed whatsapp phone number which you confirgured as from number in application.
+In this way, you tigger a 24 hour message window with the whatsapp virtual number. During the next 24 hours, nexmo whatsapp API can send text message withou need to follow a template to your mobile. This is very important, otherwise, you wont recieve any message, unless you have approved templates by Whatsapp and send a template to your mobile.
+
+e.g. If you want to use virtual "441234567890" as the whatsapp virutal number to send a message to your mobile 6590110000, then before the test, you need to firstly use 6590110000 to send a text message to "441234567890". 
+
+2. Dont read the whatsapp message and wait for other 10 minutes.
+
+3. You will receive a SMS from your virtual number.
 
